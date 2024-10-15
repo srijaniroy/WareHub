@@ -3,7 +3,8 @@
 #include <vector>
 using namespace std;
 
-class Product {
+class Product
+{
 public:
     int id;
     string name;
@@ -18,13 +19,15 @@ public:
         price = _price;
     }
 
-    void displayProduct() {
-        cout << "ID: " << id << ", Name: " << name 
+    void displayProduct()
+    {
+        cout << "ID: " << id << ", Name: " << name
              << ", Quantity: " << quantity << ", Price: $" << price << endl;
     }
 };
 
-class Supplier {
+class Supplier
+{
 public:
     int id;
     string name;
@@ -37,13 +40,15 @@ public:
         contact = _contact;
     }
 
-    void displaySupplier() {
-        cout << "Supplier ID: " << id << ", Name: " << name 
+    void displaySupplier()
+    {
+        cout << "Supplier ID: " << id << ", Name: " << name
              << ", Contact: " << contact << endl;
     }
 };
 
-class Order {
+class Order
+{
 public:
     int orderId;
     Supplier supplier;
@@ -52,28 +57,32 @@ public:
     Order(int _orderId, Supplier _supplier, vector<Product> _productsOrdered)
         : orderId(_orderId), supplier(_supplier), productsOrdered(_productsOrdered) {}
 
-    void displayOrder() {
+    void displayOrder()
+    {
         cout << "\n--- Order ID: " << orderId << " ---\n";
         supplier.displaySupplier();
         cout << "Products in this order:" << endl;
-        for (Product &product : productsOrdered) {
+        for (Product &product : productsOrdered)
+        {
             product.displayProduct();
         }
     }
 };
 
-class Inventory {
+class Inventory
+{
 private:
     vector<Product> products;
     vector<Supplier> suppliers;
     vector<Order> orders;
-    
+
 public:
-    void addProduct() {
+    void addProduct()
+    {
         int id, quantity;
         string name;
         double price;
-        
+
         cout << "Enter product ID: ";
         cin >> id;
         cout << "Enter product name: ";
@@ -88,10 +97,11 @@ public:
         cout << "Product added successfully!" << endl;
     }
 
-    void addSupplier() {
+    void addSupplier()
+    {
         int id;
         string name, contact;
-        
+
         cout << "Enter supplier ID: ";
         cin >> id;
         cout << "Enter supplier name: ";
@@ -103,74 +113,127 @@ public:
         suppliers.push_back(Supplier(id, name, contact));
         cout << "Supplier added successfully!" << endl;
     }
+    void updateSupplier()
+    {
+        int id;
+        cout << "Enter supplier ID to update: ";
+        cin >> id;
 
-    void placeOrder() {
+        for (Supplier &supplier : suppliers)
+        {
+            if (supplier.id == id)
+            {
+                cout << "Enter new supplier name: ";
+                cin.ignore();
+                getline(cin, supplier.name);
+                cout << "Enter new supplier contact: ";
+                getline(cin, supplier.contact);
+                cout << "Supplier details updated successfully!" << endl;
+                return;
+            }
+        }
+        cout << "Supplier with ID " << id << " not found." << endl;
+    }
+
+    void removeSupplier()
+    {
+        int id;
+        cout << "Enter supplier ID to remove: ";
+        cin >> id;
+
+        for (auto it = suppliers.begin(); it != suppliers.end(); ++it)
+        {
+            if (it->id == id)
+            {
+                suppliers.erase(it);
+                cout << "Supplier removed successfully!" << endl;
+                return;
+            }
+        }
+        cout << "Supplier with ID " << id << " not found." << endl;
+    }
+
+    void placeOrder()
+    {
         int supplierId, orderId, productId, quantity;
         vector<Product> orderProducts;
         Supplier orderSupplier(0, "", "");
 
         cout << "Enter supplier ID for the order: ";
         cin >> supplierId;
-        
+
         bool supplierFound = false;
-        for (Supplier &supplier : suppliers) {
-            if (supplier.id == supplierId) {
+        for (Supplier &supplier : suppliers)
+        {
+            if (supplier.id == supplierId)
+            {
                 orderSupplier = supplier;
                 supplierFound = true;
                 break;
             }
         }
-        
-        if (!supplierFound) {
+
+        if (!supplierFound)
+        {
             cout << "Supplier not found!" << endl;
             return;
         }
-        
+
         cout << "Enter order ID: ";
         cin >> orderId;
 
         char choice;
-        do {
+        do
+        {
             cout << "Enter product ID to order: ";
             cin >> productId;
             cout << "Enter quantity to order: ";
             cin >> quantity;
 
             bool productFound = false;
-            for (Product &product : products) {
-                if (product.id == productId) {
-    
-                    if (product.quantity >= quantity) {
+            for (Product &product : products)
+            {
+                if (product.id == productId)
+                {
+
+                    if (product.quantity >= quantity)
+                    {
                         product.quantity -= quantity;
                         orderProducts.push_back(Product(productId, product.name, quantity, product.price));
                         cout << "Product added to the order." << endl;
-                    } else {
+                    }
+                    else
+                    {
                         cout << "Insufficient quantity in stock!" << endl;
                     }
                     productFound = true;
                     break;
                 }
             }
-            
-            if (!productFound) {
+
+            if (!productFound)
+            {
                 cout << "Product not found!" << endl;
             }
 
             cout << "Do you want to add more products to the order? (y/n): ";
             cin >> choice;
         } while (choice == 'y' || choice == 'Y');
-      
+
         orders.push_back(Order(orderId, orderSupplier, orderProducts));
         cout << "Order placed successfully!" << endl;
     }
 
-    void removeProduct() {
+    void removeProduct()
+    {
         int id;
         cout << "Enter product ID to remove: ";
         cin >> id;
 
-        for (auto it = products.begin(); it != products.end(); ++it) {
-            if (it->id == id) {
+        for (auto it = products.begin(); it != products.end(); ++it)
+        {
+            if (it->id == id)
+            {
                 products.erase(it);
                 cout << "Product removed successfully!" << endl;
                 return;
@@ -179,15 +242,18 @@ public:
         cout << "Product with ID " << id << " not found." << endl;
     }
 
-    void updateProductQuantity() {
+    void updateProductQuantity()
+    {
         int id, newQuantity;
         cout << "Enter product ID to update quantity: ";
         cin >> id;
         cout << "Enter new quantity: ";
         cin >> newQuantity;
 
-        for (Product &product : products) {
-            if (product.id == id) {
+        for (Product &product : products)
+        {
+            if (product.id == id)
+            {
                 product.quantity = newQuantity;
                 cout << "Product quantity updated successfully!" << endl;
                 return;
@@ -196,45 +262,70 @@ public:
         cout << "Product with ID " << id << " not found." << endl;
     }
 
-    void displayInventory() {
-        if (products.empty()) {
+    void displayInventory()
+    {
+        if (products.empty())
+        {
             cout << "Inventory is empty." << endl;
             return;
         }
-        
+
         cout << "\nCurrent Inventory:" << endl;
-        for (Product &product : products) {
+        for (Product &product : products)
+        {
             product.displayProduct();
         }
     }
+    void displaySuppliers()
+    {
+        if (suppliers.empty())
+        {
+            cout << "No suppliers found." << endl;
+            return;
+        }
 
-    void displayOrders() {
-        if (orders.empty()) {
+        cout << "\n--- All Suppliers ---" << endl;
+        for (Supplier &supplier : suppliers)
+        {
+            supplier.displaySupplier();
+        }
+    }
+
+    void displayOrders()
+    {
+        if (orders.empty())
+        {
             cout << "No orders placed yet." << endl;
             return;
         }
 
         cout << "\n--- All Orders ---" << endl;
-        for (Order &order : orders) {
+        for (Order &order : orders)
+        {
             order.displayOrder();
         }
     }
 };
 
-int main() {
+int main()
+{
     Inventory inventory;
     int choice;
 
-    while (true) {
+    while (true)
+    {
         cout << "\n--- Inventory Management System ---\n";
         cout << "1. Add Product\n";
         cout << "2. Add Supplier\n";
         cout << "3. Place Order\n";
         cout << "4. Remove Product\n";
         cout << "5. Update Product Quantity\n";
-        cout << "6. Display Inventory\n";
-        cout << "7. Display Orders\n";
-        cout << "8. Exit\n";
+        cout << "6. Remove Supplier\n";
+        cout << "7. Update Supplier Details\n";
+        cout << "8. Display Inventory\n";
+        cout << "9. Display Suppliers\n";
+        cout << "10. Display Orders\n";
+        cout << "11. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -255,12 +346,21 @@ int main() {
                 inventory.updateProductQuantity();
                 break;
             case 6:
-                inventory.displayInventory();
+                inventory.removeSupplier();
                 break;
             case 7:
-                inventory.displayOrders();
+                inventory.updateSupplier();
                 break;
             case 8:
+                inventory.displayInventory();
+                break;
+            case 9:
+                inventory.displaySuppliers();
+                break;
+            case 10:
+                inventory.displayOrders();
+                break;
+            case 11:
                 cout << "Exiting program..." << endl;
                 return 0;
             default:
