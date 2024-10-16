@@ -22,7 +22,7 @@ public:
     void displayProduct()
     {
         cout << "ID: " << id << ", Name: " << name
-             << ", Quantity: " << quantity << ", Price: $" << price << endl;
+             << ", Quantity: " << quantity << ", Price: Rs. " << price << endl;
     }
 };
 
@@ -53,14 +53,16 @@ public:
     int orderId;
     Supplier supplier;
     vector<Product> productsOrdered;
+    string status;
 
     Order(int _orderId, Supplier _supplier, vector<Product> _productsOrdered)
-        : orderId(_orderId), supplier(_supplier), productsOrdered(_productsOrdered) {}
+        : orderId(_orderId), supplier(_supplier), productsOrdered(_productsOrdered), status("Pending") {}
 
     void displayOrder()
     {
         cout << "\n--- Order ID: " << orderId << " ---\n";
         supplier.displaySupplier();
+        cout << "Status: " << status << endl;
         cout << "Products in this order:" << endl;
         for (Product &product : productsOrdered)
         {
@@ -113,6 +115,7 @@ public:
         suppliers.push_back(Supplier(id, name, contact));
         cout << "Supplier added successfully!" << endl;
     }
+
     void updateSupplier()
     {
         int id;
@@ -224,6 +227,31 @@ public:
         cout << "Order placed successfully!" << endl;
     }
 
+    void completeOrder()
+    {
+        int orderId;
+        cout << "Enter order ID to mark as completed: ";
+        cin >> orderId;
+
+        for (Order &order : orders)
+        {
+            if (order.orderId == orderId)
+            {
+                if (order.status == "Pending")
+                {
+                    order.status = "Completed";
+                    cout << "Order marked as completed successfully!" << endl;
+                }
+                else
+                {
+                    cout << "Order is already completed." << endl;
+                }
+                return;
+            }
+        }
+        cout << "Order with ID " << orderId << " not found." << endl;
+    }
+
     void removeProduct()
     {
         int id;
@@ -276,6 +304,7 @@ public:
             product.displayProduct();
         }
     }
+    
     void displaySuppliers()
     {
         if (suppliers.empty())
@@ -291,18 +320,43 @@ public:
         }
     }
 
-    void displayOrders()
+    void displayPendingOrders()
     {
-        if (orders.empty())
-        {
-            cout << "No orders placed yet." << endl;
-            return;
-        }
+        bool hasPendingOrders = false;
 
-        cout << "\n--- All Orders ---" << endl;
+        cout << "\n--- Pending Orders ---" << endl;
         for (Order &order : orders)
         {
-            order.displayOrder();
+            if (order.status == "Pending")
+            {
+                order.displayOrder();
+                hasPendingOrders = true;
+            }
+        }
+
+        if (!hasPendingOrders)
+        {
+            cout << "No pending orders." << endl;
+        }
+    }
+
+    void displayCompletedOrders()
+    {
+        bool hasCompletedOrders = false;
+
+        cout << "\n--- Completed Orders ---" << endl;
+        for (Order &order : orders)
+        {
+            if (order.status == "Completed")
+            {
+                order.displayOrder();
+                hasCompletedOrders = true;
+            }
+        }
+
+        if (!hasCompletedOrders)
+        {
+            cout << "No completed orders." << endl;
         }
     }
 };
@@ -324,47 +378,56 @@ int main()
         cout << "7. Update Supplier Details\n";
         cout << "8. Display Inventory\n";
         cout << "9. Display Suppliers\n";
-        cout << "10. Display Orders\n";
-        cout << "11. Exit\n";
+        cout << "10. Display Pending Orders\n";
+        cout << "11. Display Completed Orders\n";
+        cout << "12. Complete Order\n";
+        cout << "13. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
-        switch (choice) {
-            case 1:
-                inventory.addProduct();
-                break;
-            case 2:
-                inventory.addSupplier();
-                break;
-            case 3:
-                inventory.placeOrder();
-                break;
-            case 4:
-                inventory.removeProduct();
-                break;
-            case 5:
-                inventory.updateProductQuantity();
-                break;
-            case 6:
-                inventory.removeSupplier();
-                break;
-            case 7:
-                inventory.updateSupplier();
-                break;
-            case 8:
-                inventory.displayInventory();
-                break;
-            case 9:
-                inventory.displaySuppliers();
-                break;
-            case 10:
-                inventory.displayOrders();
-                break;
-            case 11:
-                cout << "Exiting program..." << endl;
-                return 0;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
+        switch (choice)
+        {
+        case 1:
+            inventory.addProduct();
+            break;
+        case 2:
+            inventory.addSupplier();
+            break;
+        case 3:
+            inventory.placeOrder();
+            break;
+        case 4:
+            inventory.removeProduct();
+            break;
+        case 5:
+            inventory.updateProductQuantity();
+            break;
+        case 6:
+            inventory.removeSupplier();
+            break;
+        case 7:
+            inventory.updateSupplier();
+            break;
+        case 8:
+            inventory.displayInventory();
+            break;
+        case 9:
+            inventory.displaySuppliers();
+            break;
+        case 10:
+            inventory.displayPendingOrders();
+            break;
+        case 11:
+            inventory.displayCompletedOrders();
+            break;
+        case 12:
+            inventory.completeOrder();
+            break;
+        case 13:
+            cout << "Exiting program..." << endl;
+            return 0;
+        default:
+            cout << "Invalid choice. Please try again." << endl;
         }
     }
 
