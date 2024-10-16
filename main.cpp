@@ -109,7 +109,7 @@ public:
         cout << "Enter supplier name: ";
         cin.ignore();
         getline(cin, name);
-        cout << "Enter supplier contact: ";
+        cout << "Enter supplier contact number: ";
         getline(cin, contact);
 
         suppliers.push_back(Supplier(id, name, contact));
@@ -370,17 +370,17 @@ int main()
     {
         cout << "\n--- Inventory Management System ---\n";
         cout << "1. Add Product\n";
-        cout << "2. Add Supplier\n";
-        cout << "3. Place Order\n";
-        cout << "4. Remove Product\n";
-        cout << "5. Update Product Quantity\n";
+        cout << "2. Remove Product\n";
+        cout << "3. Update Product Quantity\n";
+        cout << "4. Display Inventory\n";
+        cout << "5. Add Supplier\n";
         cout << "6. Remove Supplier\n";
-        cout << "7. Update Supplier Details\n";
-        cout << "8. Display Inventory\n";
-        cout << "9. Display Suppliers\n";
-        cout << "10. Display Pending Orders\n";
-        cout << "11. Display Completed Orders\n";
-        cout << "12. Complete Order\n";
+        cout << "7. Update Supplier Details\n";      
+        cout << "8. Display Suppliers\n";
+        cout << "9. Place Order\n";
+        cout << "10. Complete Order\n";
+        cout << "11. Display Pending Orders\n";
+        cout << "12. Display Completed Orders\n";
         cout << "13. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -391,16 +391,16 @@ int main()
             inventory.addProduct();
             break;
         case 2:
-            inventory.addSupplier();
-            break;
-        case 3:
-            inventory.placeOrder();
-            break;
-        case 4:
             inventory.removeProduct();
             break;
-        case 5:
+        case 3:
             inventory.updateProductQuantity();
+            break;
+        case 4:
+            inventory.displayInventory();
+            break;
+        case 5:
+            inventory.addSupplier();
             break;
         case 6:
             inventory.removeSupplier();
@@ -409,19 +409,19 @@ int main()
             inventory.updateSupplier();
             break;
         case 8:
-            inventory.displayInventory();
-            break;
-        case 9:
             inventory.displaySuppliers();
             break;
+        case 9:
+            inventory.placeOrder();
+            break; 
         case 10:
+            inventory.completeOrder();
+            break;         
+        case 11:
             inventory.displayPendingOrders();
             break;
-        case 11:
-            inventory.displayCompletedOrders();
-            break;
         case 12:
-            inventory.completeOrder();
+            inventory.displayCompletedOrders();
             break;
         case 13:
             cout << "Exiting program..." << endl;
