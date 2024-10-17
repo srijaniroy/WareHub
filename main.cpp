@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <limits>
 using namespace std;
 
 class Product
@@ -383,7 +384,14 @@ int main()
         cout << "12. Display Completed Orders\n";
         cout << "13. Exit\n";
         cout << "Enter your choice: ";
-        cin >> choice;
+        
+        if (!(cin >> choice))
+        {
+            cout << "Invalid input. Please enter a number between 1 and 13." << endl;
+            cin.clear();                                         
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
+            continue;                                            
+        }
 
         switch (choice)
         {
