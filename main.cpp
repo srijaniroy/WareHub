@@ -58,6 +58,16 @@ public:
 
     Order(int _orderId, Supplier _supplier, vector<Product> _productsOrdered)
         : orderId(_orderId), supplier(_supplier), productsOrdered(_productsOrdered), status("Pending") {}
+    
+    double calculateTotal()            
+    {
+        double total = 0.0;
+        for (const Product product : productsOrdered)
+        {
+            total += product.price * product.quantity;
+        }
+        return total;
+    }
 
     void displayOrder()
     {
@@ -65,10 +75,11 @@ public:
         supplier.displaySupplier();
         cout << "Status: " << status << endl;
         cout << "Products in this order:" << endl;
-        for (Product &product : productsOrdered)
+        for (Product product : productsOrdered)
         {
             product.displayProduct();
         }
+        cout << "Total Amount: Rs. " << calculateTotal() << endl;
     }
 };
 
@@ -123,7 +134,7 @@ public:
         cout << "Enter supplier ID to update: ";
         cin >> id;
 
-        for (Supplier &supplier : suppliers)
+        for (Supplier supplier : suppliers)
         {
             if (supplier.id == id)
             {
@@ -167,7 +178,7 @@ public:
         cin >> supplierId;
 
         bool supplierFound = false;
-        for (Supplier &supplier : suppliers)
+        for (Supplier supplier : suppliers)
         {
             if (supplier.id == supplierId)
             {
@@ -195,7 +206,7 @@ public:
             cin >> quantity;
 
             bool productFound = false;
-            for (Product &product : products)
+            for (Product product : products)
             {
                 if (product.id == productId)
                 {
@@ -225,7 +236,9 @@ public:
         } while (choice == 'y' || choice == 'Y');
 
         orders.push_back(Order(orderId, orderSupplier, orderProducts));
+        double totalAmount = orders.back().calculateTotal(); 
         cout << "Order placed successfully!" << endl;
+        cout << "Total Amount: Rs. " << totalAmount << endl;
     }
 
     void completeOrder()
@@ -234,7 +247,7 @@ public:
         cout << "Enter order ID to mark as completed: ";
         cin >> orderId;
 
-        for (Order &order : orders)
+        for (Order order : orders)
         {
             if (order.orderId == orderId)
             {
@@ -279,7 +292,7 @@ public:
         cout << "Enter new quantity: ";
         cin >> newQuantity;
 
-        for (Product &product : products)
+        for (Product product : products)
         {
             if (product.id == id)
             {
@@ -300,7 +313,7 @@ public:
         }
 
         cout << "\nCurrent Inventory:" << endl;
-        for (Product &product : products)
+        for (Product product : products)
         {
             product.displayProduct();
         }
@@ -315,7 +328,7 @@ public:
         }
 
         cout << "\n--- All Suppliers ---" << endl;
-        for (Supplier &supplier : suppliers)
+        for (Supplier supplier : suppliers)
         {
             supplier.displaySupplier();
         }
@@ -326,7 +339,7 @@ public:
         bool hasPendingOrders = false;
 
         cout << "\n--- Pending Orders ---" << endl;
-        for (Order &order : orders)
+        for (Order order : orders)
         {
             if (order.status == "Pending")
             {
@@ -346,7 +359,7 @@ public:
         bool hasCompletedOrders = false;
 
         cout << "\n--- Completed Orders ---" << endl;
-        for (Order &order : orders)
+        for (Order order : orders)
         {
             if (order.status == "Completed")
             {
