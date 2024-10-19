@@ -58,8 +58,8 @@ public:
 
     Order(int _orderId, Supplier _supplier, vector<Product> _productsOrdered)
         : orderId(_orderId), supplier(_supplier), productsOrdered(_productsOrdered), status("Pending") {}
-    
-    double calculateTotal()            
+
+    double calculateTotal()
     {
         double total = 0.0;
         for (const Product product : productsOrdered)
@@ -111,6 +111,18 @@ public:
         cout << "Product added successfully!" << endl;
     }
 
+    bool isValidContact(string contact)
+    {
+        if (contact.length() != 10)
+            return false;
+        for (char c : contact)
+        {
+            if (!isdigit(c))
+                return false;
+        }
+        return true;
+    }
+
     void addSupplier()
     {
         int id;
@@ -121,8 +133,19 @@ public:
         cout << "Enter supplier name: ";
         cin.ignore();
         getline(cin, name);
-        cout << "Enter supplier contact number: ";
-        getline(cin, contact);
+        while (true)
+        {
+            cout << "Enter supplier contact (10 digits): ";
+            getline(cin, contact);
+            if (isValidContact(contact))
+            {
+                break;
+            }
+            else
+            {
+                cout << "Invalid contact number. Please enter exactly 10 digits." << endl;
+            }
+        }
 
         suppliers.push_back(Supplier(id, name, contact));
         cout << "Supplier added successfully!" << endl;
@@ -236,7 +259,7 @@ public:
         } while (choice == 'y' || choice == 'Y');
 
         orders.push_back(Order(orderId, orderSupplier, orderProducts));
-        double totalAmount = orders.back().calculateTotal(); 
+        double totalAmount = orders.back().calculateTotal();
         cout << "Order placed successfully!" << endl;
         cout << "Total Amount: Rs. " << totalAmount << endl;
     }
@@ -318,7 +341,7 @@ public:
             product.displayProduct();
         }
     }
-    
+
     void displaySuppliers()
     {
         if (suppliers.empty())
@@ -389,7 +412,7 @@ int main()
         cout << "4. Display Inventory\n";
         cout << "5. Add Supplier\n";
         cout << "6. Remove Supplier\n";
-        cout << "7. Update Supplier Details\n";      
+        cout << "7. Update Supplier Details\n";
         cout << "8. Display Suppliers\n";
         cout << "9. Place Order\n";
         cout << "10. Complete Order\n";
@@ -397,13 +420,13 @@ int main()
         cout << "12. Display Completed Orders\n";
         cout << "13. Exit\n";
         cout << "Enter your choice: ";
-        
+
         if (!(cin >> choice))
         {
             cout << "Invalid input. Please enter a number between 1 and 13." << endl;
-            cin.clear();                                         
-            cin.ignore(numeric_limits<streamsize>::max(), '\n'); 
-            continue;                                            
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            continue;
         }
 
         switch (choice)
@@ -434,10 +457,10 @@ int main()
             break;
         case 9:
             inventory.placeOrder();
-            break; 
+            break;
         case 10:
             inventory.completeOrder();
-            break;         
+            break;
         case 11:
             inventory.displayPendingOrders();
             break;
