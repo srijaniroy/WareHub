@@ -62,7 +62,7 @@ public:
     double calculateTotal()
     {
         double total = 0.0;
-        for (const Product product : productsOrdered)
+        for (const Product &product : productsOrdered)
         {
             total += product.price * product.quantity;
         }
@@ -75,7 +75,7 @@ public:
         supplier.displaySupplier();
         cout << "Status: " << status << endl;
         cout << "Products in this order:" << endl;
-        for (Product product : productsOrdered)
+        for (Product &product : productsOrdered)
         {
             product.displayProduct();
         }
@@ -91,6 +91,16 @@ private:
     vector<Order> orders;
 
 public:
+    bool isProductIdUnique(int id)
+    {
+        for (const Product &product : products)
+        {
+            if (product.id == id)
+                return false;
+        }
+        return true;
+    }
+
     void addProduct()
     {
         int id, quantity;
@@ -99,6 +109,11 @@ public:
 
         cout << "Enter product ID: ";
         cin >> id;
+        while (!isProductIdUnique(id))
+        {
+            cout << "Product ID already exists. Enter a unique ID: ";
+            cin >> id;
+        }
         cout << "Enter product name: ";
         cin.ignore();
         getline(cin, name);
@@ -123,6 +138,16 @@ public:
         return true;
     }
 
+    bool isSupplierIdUnique(int id)
+    {
+        for (const Supplier &supplier : suppliers)
+        {
+            if (supplier.id == id)
+                return false;
+        }
+        return true;
+    }
+
     void addSupplier()
     {
         int id;
@@ -130,6 +155,11 @@ public:
 
         cout << "Enter supplier ID: ";
         cin >> id;
+        while (!isSupplierIdUnique(id))
+        {
+            cout << "Supplier ID already exists. Enter a unique ID: ";
+            cin >> id;
+        }
         cout << "Enter supplier name: ";
         cin.ignore();
         getline(cin, name);
@@ -157,7 +187,7 @@ public:
         cout << "Enter supplier ID to update: ";
         cin >> id;
 
-        for (Supplier supplier : suppliers)
+        for (Supplier &supplier : suppliers)
         {
             if (supplier.id == id)
             {
@@ -201,7 +231,7 @@ public:
         cin >> supplierId;
 
         bool supplierFound = false;
-        for (Supplier supplier : suppliers)
+        for (Supplier &supplier : suppliers)
         {
             if (supplier.id == supplierId)
             {
@@ -229,7 +259,7 @@ public:
             cin >> quantity;
 
             bool productFound = false;
-            for (Product product : products)
+            for (Product &product : products)
             {
                 if (product.id == productId)
                 {
@@ -270,7 +300,7 @@ public:
         cout << "Enter order ID to mark as completed: ";
         cin >> orderId;
 
-        for (Order order : orders)
+        for (Order &order : orders)
         {
             if (order.orderId == orderId)
             {
@@ -307,25 +337,34 @@ public:
         cout << "Product with ID " << id << " not found." << endl;
     }
 
-    void updateProductQuantity()
-    {
-        int id, newQuantity;
-        cout << "Enter product ID to update quantity: ";
-        cin >> id;
-        cout << "Enter new quantity: ";
-        cin >> newQuantity;
+    void updateProductDetails() {
+    int id;
+    cout << "Enter product ID to update: ";
+    cin >> id;
 
-        for (Product product : products)
-        {
-            if (product.id == id)
-            {
-                product.quantity = newQuantity;
-                cout << "Product quantity updated successfully!" << endl;
-                return;
-            }
+    for (Product &product : products) {
+        if (product.id == id) {
+            double newPrice;
+            int newQuantity;
+
+            cout << "Current Price: Rs. " << product.price << endl;
+            cout << "Enter new price: ";
+            cin >> newPrice;
+
+            cout << "Current Quantity: " << product.quantity << endl;
+            cout << "Enter new quantity: ";
+            cin >> newQuantity;
+
+            product.price = newPrice;
+            product.quantity = newQuantity;
+
+            cout << "Product details updated successfully!" << endl;
+            return;
         }
-        cout << "Product with ID " << id << " not found." << endl;
     }
+    cout << "Product with ID " << id << " not found." << endl;
+}
+
 
     void displayInventory()
     {
@@ -336,7 +375,7 @@ public:
         }
 
         cout << "\nCurrent Inventory:" << endl;
-        for (Product product : products)
+        for (Product &product : products)
         {
             product.displayProduct();
         }
@@ -351,7 +390,7 @@ public:
         }
 
         cout << "\n--- All Suppliers ---" << endl;
-        for (Supplier supplier : suppliers)
+        for (Supplier &supplier : suppliers)
         {
             supplier.displaySupplier();
         }
@@ -362,7 +401,7 @@ public:
         bool hasPendingOrders = false;
 
         cout << "\n--- Pending Orders ---" << endl;
-        for (Order order : orders)
+        for (Order &order : orders)
         {
             if (order.status == "Pending")
             {
@@ -382,7 +421,7 @@ public:
         bool hasCompletedOrders = false;
 
         cout << "\n--- Completed Orders ---" << endl;
-        for (Order order : orders)
+        for (Order &order : orders)
         {
             if (order.status == "Completed")
             {
@@ -408,7 +447,7 @@ int main()
         cout << "\n--- Inventory Management System ---\n";
         cout << "1. Add Product\n";
         cout << "2. Remove Product\n";
-        cout << "3. Update Product Quantity\n";
+        cout << "3. Update Product Details\n";
         cout << "4. Display Inventory\n";
         cout << "5. Add Supplier\n";
         cout << "6. Remove Supplier\n";
@@ -438,7 +477,7 @@ int main()
             inventory.removeProduct();
             break;
         case 3:
-            inventory.updateProductQuantity();
+            inventory.updateProductDetails();
             break;
         case 4:
             inventory.displayInventory();
