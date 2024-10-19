@@ -1,12 +1,12 @@
 # WareHub
 
-This command-line Inventory Management System is a C++ application built using Object-Oriented Programming (OOP) principles. It is designed to help manage products, suppliers, and orders within an inventory. Users can easily add, update, and remove products and suppliers, as well as place and complete orders, all through a simple command-line interface..
+WareHub is a command-line Inventory Management System developed in C++ using Object-Oriented Programming principles. It facilitates efficient management of products, suppliers, and orders within an inventory, all through a simple command-line interface.
 
 ## Features
-- **Product Management**: Add, remove, and update product details (ID, name, quantity, price).
-- **Supplier Management**: Add, remove, and update supplier details (ID, name, contact number).
+- **Product Management**: Easily add, remove, and update product details including ID, name, quantity, and price.
+- **Supplier Management**: Manage supplier details by adding, removing, and updating their information (ID, name, contact number).
 - **Order Management**: Place orders, view pending and completed orders, and mark orders as completed.
-- **Inventory Display**: View current inventory and supplier lists.
+- **Inventory Display**: Access a list of current inventory items and suppliers.
 
 ## Requirements
 - C++ Compiler (g++, clang++, etc.)
