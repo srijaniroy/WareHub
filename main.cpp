@@ -131,12 +131,15 @@ public:
         }
     }
 
-    bool isProductIdUnique(int id)
+    template <typename T>
+    bool isIdUnique(int id, const vector<T> &items) const
     {
-        for (const Product &product : products)
+        for (const auto &item : items)
         {
-            if (product.id == id)
+            if (item.id == id)
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -149,7 +152,7 @@ public:
 
         cout << "Enter product ID: ";
         cin >> id;
-        while (!isProductIdUnique(id))
+        while (!isIdUnique(id, products))
         {
             cout << "Product ID already exists. Enter a unique ID: ";
             cin >> id;
@@ -178,16 +181,6 @@ public:
         return true;
     }
 
-    bool isSupplierIdUnique(int id)
-    {
-        for (const Supplier &supplier : suppliers)
-        {
-            if (supplier.id == id)
-                return false;
-        }
-        return true;
-    }
-
     void addSupplier()
     {
         int id;
@@ -195,7 +188,7 @@ public:
 
         cout << "Enter supplier ID: ";
         cin >> id;
-        while (!isSupplierIdUnique(id))
+        while (!isIdUnique(id, suppliers))
         {
             cout << "Supplier ID already exists. Enter a unique ID: ";
             cin >> id;
