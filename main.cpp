@@ -91,6 +91,46 @@ private:
     vector<Order> orders;
 
 public:
+    int getValidInteger()
+    {
+        int value;
+        while (true)
+        {
+            cin >> value;
+            if (cin.fail() || value < 0)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Please enter a non-negative integer: ";
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                return value;
+            }
+        }
+    }
+
+    double getValidDouble()
+    {
+        double value;
+        while (true)
+        {
+            cin >> value;
+            if (cin.fail() || value < 0.0)
+            {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Invalid input. Please enter a non-negative number: ";
+            }
+            else
+            {
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                return value;
+            }
+        }
+    }
+
     bool isProductIdUnique(int id)
     {
         for (const Product &product : products)
@@ -118,9 +158,9 @@ public:
         cin.ignore();
         getline(cin, name);
         cout << "Enter product quantity: ";
-        cin >> quantity;
+        quantity = getValidInteger();
         cout << "Enter product price: ";
-        cin >> price;
+        price = getValidDouble();
 
         products.push_back(Product(id, name, quantity, price));
         cout << "Product added successfully!" << endl;
@@ -337,34 +377,36 @@ public:
         cout << "Product with ID " << id << " not found." << endl;
     }
 
-    void updateProductDetails() {
-    int id;
-    cout << "Enter product ID to update: ";
-    cin >> id;
+    void updateProductDetails()
+    {
+        int id;
+        cout << "Enter product ID to update: ";
+        cin >> id;
 
-    for (Product &product : products) {
-        if (product.id == id) {
-            double newPrice;
-            int newQuantity;
+        for (Product &product : products)
+        {
+            if (product.id == id)
+            {
+                double newPrice;
+                int newQuantity;
 
-            cout << "Current Price: Rs. " << product.price << endl;
-            cout << "Enter new price: ";
-            cin >> newPrice;
+                cout << "Current Price: Rs. " << product.price << endl;
+                cout << "Enter new price: ";
+                cin >> newPrice;
 
-            cout << "Current Quantity: " << product.quantity << endl;
-            cout << "Enter new quantity: ";
-            cin >> newQuantity;
+                cout << "Current Quantity: " << product.quantity << endl;
+                cout << "Enter new quantity: ";
+                cin >> newQuantity;
 
-            product.price = newPrice;
-            product.quantity = newQuantity;
+                product.price = newPrice;
+                product.quantity = newQuantity;
 
-            cout << "Product details updated successfully!" << endl;
-            return;
+                cout << "Product details updated successfully!" << endl;
+                return;
+            }
         }
+        cout << "Product with ID " << id << " not found." << endl;
     }
-    cout << "Product with ID " << id << " not found." << endl;
-}
-
 
     void displayInventory()
     {
